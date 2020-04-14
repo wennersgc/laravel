@@ -1,5 +1,7 @@
 ## Desenvolvendo marketplace com Laravel 6
-## Objetivo
+
+### Objetivo
+
 Estudar o framework 
 ### Tecnologias
 * PHP
