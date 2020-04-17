@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLojas extends Migration
+class CreateLoja extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateLojas extends Migration
      */
     public function up()
     {
-        Schema::create('lojas', function (Blueprint $table) {
+        Schema::create('loja', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
 

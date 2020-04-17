@@ -15,7 +15,7 @@ class CreateProdutosTable extends Migration
     {
         Schema::create('produtos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('lojas_id');
+            $table->unsignedBigInteger('loja_id');
 
             $table->string('nome');
             $table->string('descricao');
@@ -24,7 +24,7 @@ class CreateProdutosTable extends Migration
             $table->string('slug');
             $table->timestamps();
 
-            $table->foreign('lojas_id')->references('id')->on('lojas');
+            $table->foreign('loja_id')->references('id')->on('loja');
         });
     }
 
