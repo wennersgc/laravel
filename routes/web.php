@@ -17,8 +17,7 @@ Route::get('/', function () {
     $helloWord['helloword'] = 'Hello Word';
     return view('welcome',$helloWord);
 });
-<<<<<<< HEAD
-=======
+
 
 Route::get('/model', function (){
 //    $produtos = \App\Produto::all();
@@ -81,4 +80,17 @@ Route::get('/model', function (){
 //    dd($produto->categorias()->detach([1])); // remove
     dd($produto->categorias()->sync([1, 2]));
 });
->>>>>>> # Foram criados os models Loja e Produto
+
+Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function (){
+
+    Route::prefix('lojas')->name('loja.')->group(function (){
+
+        Route::get('/', 'LojaController@index')->name('index');
+        Route::get('/criar', 'LojaController@criar')->name('criar');
+        Route::post('/salvar', 'LojaController@salvar')->name('salvar');
+        Route::get('/{loja}/editar', 'LojaController@editar')->name('editar');
+        Route::post('/atualizar/{loja}', 'LojaController@atualizar')->name('atualizar');
+        Route::get('/remover/{loja}', 'LojaController@remover')->name('remover');
+    });
+
+});
