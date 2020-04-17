@@ -15,16 +15,16 @@ class CreateProdutosTable extends Migration
     {
         Schema::create('produtos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('loja_id');
+            $table->unsignedBigInteger('lojas_id');
 
             $table->string('nome');
             $table->string('descricao');
-            $table->longText('informacoes');
+            $table->string('informcaoes');
             $table->decimal('preco', 10, 2);
             $table->string('slug');
             $table->timestamps();
 
-            $table->foreign('loja_id')->references('id')->on('lojas');
+            $table->foreign('lojas_id')->references('id')->on('lojas');
         });
     }
 

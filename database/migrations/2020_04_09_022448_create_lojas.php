@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriasTable extends Migration
+class CreateLojas extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,20 @@ class CreateCategoriasTable extends Migration
      */
     public function up()
     {
-        Schema::create('categorias', function (Blueprint $table) {
+        Schema::create('lojas', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id');
+
             $table->string('nome');
-            $table->string('descricao')->nullable();
+            $table->string('descricao');
+            $table->string('fone');
+            $table->string('celular');
             $table->string('slug');
+
             $table->timestamps();
+
+            //nome chave estengeira loja_user_id_foreign
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -29,6 +37,6 @@ class CreateCategoriasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categorias');
+        Schema::dropIfExists('loja');
     }
 }

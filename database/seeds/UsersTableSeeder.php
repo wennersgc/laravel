@@ -21,9 +21,7 @@ class UsersTableSeeder extends Seeder
 //            ]
 //        );
 
-        factory(\App\User::class, 40)->create()->each(function ($user){
-            $user->loja()->save(factory(\App\Loja::class)->make());
-        });
+        factory(\App\User::class, 40)->create();
 
     }
 }
