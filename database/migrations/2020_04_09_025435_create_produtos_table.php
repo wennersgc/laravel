@@ -19,12 +19,16 @@ class CreateProdutosTable extends Migration
 
             $table->string('nome');
             $table->string('descricao');
-            $table->string('informcaoes');
+            $table->longText('informacoes');
             $table->decimal('preco', 10, 2);
             $table->string('slug');
             $table->timestamps();
 
+<<<<<<< HEAD
             $table->foreign('loja_id')->references('id')->on('loja');
+=======
+            $table->foreign('loja_id')->references('id')->on('lojas');
+>>>>>>> # Foram criados os models Loja e Produto
         });
     }
 
