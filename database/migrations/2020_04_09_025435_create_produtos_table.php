@@ -24,15 +24,7 @@ class CreateProdutosTable extends Migration
             $table->string('slug');
             $table->timestamps();
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-            $table->foreign('loja_id')->references('id')->on('loja');
-=======
             $table->foreign('loja_id')->references('id')->on('lojas');
->>>>>>> # Foram criados os models Loja e Produto
-=======
-            $table->foreign('loja_id')->references('id')->on('lojas');
->>>>>>> 18192dbb5262a5a8b277ee09ad65bcbccd94510d
         });
     }
 
