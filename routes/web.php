@@ -86,11 +86,13 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function (){
     Route::prefix('lojas')->name('loja.')->group(function (){
 
         Route::get('/', 'LojaController@index')->name('index');
-        Route::get('/criar', 'LojaController@criar')->name('criar');
-        Route::post('/salvar', 'LojaController@salvar')->name('salvar');
-        Route::get('/{loja}/editar', 'LojaController@editar')->name('editar');
-        Route::post('/atualizar/{loja}', 'LojaController@atualizar')->name('atualizar');
-        Route::get('/remover/{loja}', 'LojaController@remover')->name('remover');
+        Route::get('/create', 'LojaController@create')->name('create');
+        Route::post('/store', 'LojaController@store')->name('store');
+        Route::get('/{loja}/edit', 'LojaController@edit')->name('edit');
+        Route::post('/update/{loja}', 'LojaController@update')->name('update');
+        Route::get('/destroy/{loja}', 'LojaController@destroy')->name('destroy');
     });
+
+    Route::resource('produtos', 'ProdutoController');
 
 });

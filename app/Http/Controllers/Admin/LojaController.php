@@ -14,13 +14,13 @@ class LojaController extends Controller
         return view('admin.lojas.index', compact('lojas'));
     }
 
-    public function criar()
+    public function create()
     {
         $users = \App\User::all(['id', 'name']);
         return view('admin.lojas.criar', compact('users'));
     }
 
-    public function salvar(Request $request)
+    public function store(Request $request)
     {
         $data = $request->all();
 
@@ -31,14 +31,14 @@ class LojaController extends Controller
         return redirect()->route('admin.loja.index');
     }
 
-    public function editar($loja)
+    public function edit($loja)
     {
         $loja =\App\Loja::find($loja);
 
         return view('admin.lojas.editar', compact('loja'));
     }
 
-    public function atualizar(Request $request, $loja)
+    public function update(Request $request, $loja)
     {
         $data = $request->all();
 
@@ -50,7 +50,7 @@ class LojaController extends Controller
         return redirect()->route('admin.loja.index');
     }
 
-    public function remover($loja)
+    public function destroy($loja)
     {
         $loja = \App\Loja::find($loja);
         $loja->delete();
