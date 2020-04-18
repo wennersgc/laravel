@@ -10,6 +10,7 @@
        <th>#</th>
        <th>Nome</th>
        <th>Preço</th>
+       <th>Loja</th>
        <th>Ações</th>
    </tr>
    </thead>
@@ -20,6 +21,7 @@
                 <td>{{$produto->id}}</td>
                 <td>{{$produto->nome}}</td>
                 <td>R$ {{$produto->preco}}</td>
+                <td>{{$produto->loja->nome}}</td>
                 <td>
                     <div class="btn-group">
                         <a href="{{route('admin.produtos.edit', ['produto' => $produto->id])}}" class="btn btn-sm btn-primary mr-2">Editar</a>

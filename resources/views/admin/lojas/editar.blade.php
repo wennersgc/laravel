@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <h2>Criar loja</h2>
+    <h2>Atualizar loja</h2>
 
-    <form action="{{route('admin.loja.update', ['loja' => $loja->id])}}" method="post">
-
-        <input type="hidden" name="_token" value="{{csrf_token()}}">
+    <form action="{{route('admin.lojas.update', ['loja' => $loja->id])}}" method="post">
+        @csrf
+        @method('PUT')
 
         <div class="form-group">
             <label>Loja</label>

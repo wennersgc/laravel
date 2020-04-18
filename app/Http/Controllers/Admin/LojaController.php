@@ -28,7 +28,7 @@ class LojaController extends Controller
         $loja = $user->loja()->create($data);
 
        flash('Loja criada com sucesso')->success();
-        return redirect()->route('admin.loja.index');
+        return redirect()->route('admin.lojas.index');
     }
 
     public function edit($loja)
@@ -47,7 +47,7 @@ class LojaController extends Controller
         $loja->update($data);
 
         flash('Loja atualizada comsucesso')->success();
-        return redirect()->route('admin.loja.index');
+        return redirect()->route('admin.lojas.index');
     }
 
     public function destroy($loja)
@@ -56,6 +56,6 @@ class LojaController extends Controller
         $loja->delete();
 
         flash('Loja removida com sucesso')->success();
-        return redirect()->route('admin.loja.index');
+        return redirect()->route('admin.lojas.index');
     }
 }

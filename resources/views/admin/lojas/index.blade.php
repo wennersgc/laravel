@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <a href="{{route('admin.loja.create')}}" class="btn btn-md btn-success mb-4 mt-4">Criar loja</a>
+    <a href="{{route('admin.lojas.create')}}" class="btn btn-md btn-success mb-4 mt-4">Criar loja</a>
 
     <table class="table table-striped">
    <thead>
@@ -19,9 +19,14 @@
                 <td>{{$loja->id}}</td>
                 <td>{{$loja->nome}}</td>
                 <td>
-                    <a href="{{route('admin.loja.edit', ['loja' => $loja->id])}}" class="btn btn-sm btn-primary">Editar</a>
-                    <a href="{{route('admin.loja.destroy', ['loja' => $loja->id])}}" class="btn btn-sm btn-danger">Remover</a>
-
+                    <div class="btn-group">
+                        <a href="{{route('admin.lojas.edit', ['loja' => $loja->id])}}" class="btn btn-sm btn-primary mr-2">Editar</a>
+                        <form action="{{route('admin.lojas.destroy', ['loja' => $loja->id])}}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Remover</button>
+                        </form>
+                    </div>
                 </td>
             </tr>
         @endforeach

@@ -4,8 +4,8 @@
 
     <h2>Criar loja</h2>
 
-    <form action="{{route('admin.loja.store')}}" method="post">
-        <input type="hidden" name="_token" value="{{csrf_token()}}">
+    <form action="{{route('admin.lojas.store')}}" method="post">
+        @csrf
 
         <div class="form-group">
             <label>Loja</label>
