@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $helloWord['helloword'] = 'Hello Word';
     return view('welcome',$helloWord);
-});
+})->name('home');
 
 
 Route::get('/model', function (){
@@ -74,14 +74,15 @@ Route::get('/model', function (){
 
 //    Adicionar produto para categoria ou vice-versa
 
-    $produto = \App\Produto::find(41);
+//    $produto = \App\Produto::find(41);
 
 //    dd($produto->categorias()->attach([1])); // adiciona
 //    dd($produto->categorias()->detach([1])); // remove
-    dd($produto->categorias()->sync([1, 2]));
+//    dd($produto->categorias()->sync([1, 2]));
 });
 
-Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function (){
+Route::group(['middleware' => ['auth']], function (){
+    Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function (){
 
 //    Route::prefix('lojas')->name('loja.')->group(function (){
 //
@@ -93,7 +94,13 @@ Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function (){
 //        Route::get('/destroy/{loja}', 'LojaController@destroy')->name('destroy');
 //    });
 
-    Route::resource('lojas', 'LojaController');
-    Route::resource('produtos', 'ProdutoController');
+        Route::resource('lojas', 'LojaController');
+        Route::resource('produtos', 'ProdutoController');
+
+    });
 
 });
+
+Auth::routes();
+
+//Route::get('/home', 'HomeController@index')->name('home');

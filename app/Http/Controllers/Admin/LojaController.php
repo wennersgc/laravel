@@ -24,7 +24,7 @@ class LojaController extends Controller
     {
         $data = $request->all();
 
-        $user = \App\User::find($data['user']);
+        $user = auth()->user(); //usuario autenticado
         $loja = $user->loja()->create($data);
 
        flash('Loja criada com sucesso')->success();
