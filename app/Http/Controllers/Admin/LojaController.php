@@ -4,14 +4,21 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\LojaRequest;
 
 class LojaController extends Controller
 {
+
+    public function __construct()
+    {
+    	$this->middleware('user.has.loja')->only(['create', 'store']);
+    }
+
     public function index()
     {
-        $lojas = \App\Loja::paginate(10);
+        $loja = auth()->user()->loja;
 
-        return view('admin.lojas.index', compact('lojas'));
+        return view('admin.lojas.index', compact('loja'));
     }
 
     public function create()
@@ -20,16 +27,22 @@ class LojaController extends Controller
         return view('admin.lojas.criar', compact('users'));
     }
 
-    public function store(Request $request)
+    public function store(LojaRequest $request)
     {
         $data = $request->all();
 
-        $user = auth()->user(); //usuario autenticado
-        $loja = $user->loja()->create($data);
+        $user = auth()->user();
+        $user->loja()->create($data);
 
        flash('Loja criada com sucesso')->success();
         return redirect()->route('admin.lojas.index');
     }
+
+    public function show($id)
+    {
+        return redirect()->route('admin.lojas.index');
+    }
+
 
     public function edit($loja)
     {
@@ -38,7 +51,7 @@ class LojaController extends Controller
         return view('admin.lojas.editar', compact('loja'));
     }
 
-    public function update(Request $request, $loja)
+    public function update(LojaRequest $request, $loja)
     {
         $data = $request->all();
 

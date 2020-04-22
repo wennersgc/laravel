@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <h2>Atualizar loja</h2>
 
     <form action="{{route('admin.lojas.update', ['loja' => $loja->id])}}" method="post">

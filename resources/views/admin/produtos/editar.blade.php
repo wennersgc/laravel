@@ -6,40 +6,55 @@
 
     <form action="{{route('admin.produtos.update', ['produto' => $produto->id])}}" method="post">
         @csrf
-        @method('PUT')
+        @method("PUT")
 
         <div class="form-group">
             <label>Produto</label>
-            <input type="text" name="nome" class="form-control" value="{{$produto->nome}}">
+            <input type="text" name="nome" class="form-control @error('nome') is-invalid   @enderror" value="{{$produto->nome}}">
+
+            @error('nome')
+            <div class="invalid-feedback">
+                {{$message}}
+            </div>
+            @enderror
         </div>
 
         <div class="form-group">
             <label>Descrição</label>
-            <input type="text" name="descricao" class="form-control" value="{{$produto->descricao}}">
+            <input type="text" name="descricao" class="form-control @error('descricao') is-invalid   @enderror" value="{{$produto->descricao}}">
+
+            @error('descricao')
+            <div class="invalid-feedback">
+                {{$message}}
+            </div>
+            @enderror
         </div>
 
         <div class="form-group">
             <label>Informações</label>
-            <textarea name="informacoes" cols="30" rows="10" class="form-control">{{$produto->informacoes}}</textarea>
+            <textarea name="informacoes" cols="30" rows="10" class="form-control @error('informacoes') is-invalid   @enderror">{{$produto->informacoes}}</textarea>
+
+            @error('informacoes')
+            <div class="invalid-feedback">
+                {{$message}}
+            </div>
+            @enderror
         </div>
 
         <div class="form-group">
             <label>Preço</label>
-            <input type="text" name="preco" class="form-control" value="{{$produto->preco}}">
+            <input type="text" name="preco" class="form-control @error('preco') is-invalid   @enderror" value="{{$produto->preco}}">
+
+            @error('preco')
+            <div class="invalid-feedback">
+                {{$message}}
+            </div>
+            @enderror
         </div>
 
         <div class="form-group">
             <label>Slug</label>
             <input type="text" name="slug" class="form-control" value="{{$produto->slug}}">
-        </div>
-
-        <div class="form-group">
-            <label>Lojas</label>
-            <select name="user" id="" class="form-control">
-                @foreach($lojas as $loja)
-                    <option value="{{$loja->id}}">{{$loja->nome}}"</option>
-                @endforeach
-            </select>
         </div>
 
         <div class="form-group">

@@ -19,10 +19,10 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item  @if(request()->is('admin/lojas')) active @endif">
+            <li class="nav-item  @if(request()->is('admin/lojas*')) active @endif">
                 <a class="nav-link" href="{{route('admin.lojas.index')}}">Lojas</a>
             </li>
-            <li class="nav-item  @if(request()->is('admin/produtos')) active @endif">
+            <li class="nav-item  @if(request()->is('admin/produtos*')) active @endif">
                 <a class="nav-link" href="{{route('admin.produtos.index')}}">Produtos</a>
             </li>
         </ul>

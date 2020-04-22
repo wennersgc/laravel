@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Produto;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProdutoRequest;
 
 class ProdutoController extends Controller
 {
@@ -43,11 +44,11 @@ class ProdutoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProdutoRequest $request)
     {
         $data = $request->all();
 
-        $loja = \App\Loja::find($data['loja']);
+        $loja = auth()->user()->loja;
         $loja->produtos()->create($data);
 
         flash('Produto criado com sucesso')->success();
@@ -74,6 +75,7 @@ class ProdutoController extends Controller
     public function edit($produto)
     {
         $produto = $this->produto->findOrFail($produto);
+
         $lojas = \App\Loja::all(['id', 'nome']);
 
         return  view('admin.produtos.editar', compact('produto', 'lojas'));
@@ -86,7 +88,7 @@ class ProdutoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $produto)
+    public function update(ProdutoRequest $request, $produto)
     {
         $data = $request->all();
 
