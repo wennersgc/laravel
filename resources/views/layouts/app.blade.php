@@ -25,6 +25,9 @@
             <li class="nav-item  @if(request()->is('admin/produtos*')) active @endif">
                 <a class="nav-link" href="{{route('admin.produtos.index')}}">Produtos</a>
             </li>
+            <li class="nav-item  @if(request()->is('admin/categorias*')) active @endif">
+                <a class="nav-link" href="{{route('admin.categorias.index')}}">Categorias</a>
+            </li>
         </ul>
         <div class="my-2 my-lg-0">
             <ul class="navbar-nav mr-auto">
