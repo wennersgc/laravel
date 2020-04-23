@@ -17,7 +17,6 @@ class LojaController extends Controller
     public function index()
     {
         $loja = auth()->user()->loja;
-
         return view('admin.lojas.index', compact('loja'));
     }
 
