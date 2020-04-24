@@ -54,6 +54,12 @@ class ProdutoController extends Controller
 
         $produto->categorias()->sync($data['categorias']);
 
+        if ($request->hasFile('fotos')) {
+            $images = $this->imageUpload($request, 'image');
+
+            $produto->fotos()->createMany($images);
+        }
+
         flash('Produto criado com sucesso')->success();
         return redirect()->route('admin.produtos.index');
     }
@@ -116,5 +122,17 @@ class ProdutoController extends Controller
 
         flash('Produto removido com sucesso');
         return redirect()->route('admin.produtos.index');
+    }
+
+    private function imageUpload(Request $request, $imageColum)
+    {
+        $images  = $request->file('fotos');
+        $uploadedImages = [];
+
+        foreach ($images as $image) {
+            $uploadedImages[] =[$imageColum => $image->store('podutos', 'public')];
+        }
+
+        return $uploadedImages;
     }
 }
