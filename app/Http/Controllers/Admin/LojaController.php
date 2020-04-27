@@ -5,13 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\LojaRequest;
+use App\Traits\UploadTrait;
+use Illuminate\Support\Facades\Storage;
 
 class LojaController extends Controller
 {
+    use UploadTrait;
 
     public function __construct()
     {
-    	$this->middleware('user.has.loja')->only(['create', 'store']);
+//    	$this->middleware('user.has.loja')->only(['create', 'store']);
     }
 
     public function index()
@@ -26,11 +29,15 @@ class LojaController extends Controller
         return view('admin.lojas.criar', compact('users'));
     }
 
-    public function store(LojaRequest $request)
+    public function store(Request $request)
     {
         $data = $request->all();
-
         $user = auth()->user();
+
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $this->imageUpload($request->file('logo'));
+        }
+
         $user->loja()->create($data);
 
        flash('Loja criada com sucesso')->success();
@@ -55,6 +62,15 @@ class LojaController extends Controller
         $data = $request->all();
 
         $loja= \App\Loja::find($loja);
+
+        if ($request->hasFile('logo')) {
+
+            if (Storage::disk('public')->exists($loja->logo)) {
+                Storage::disk('public')->delete($loja->logo);
+            }
+
+            $data['logo'] = $this->imageUpload($request->file('logo'));
+        }
 
         $loja->update($data);
 

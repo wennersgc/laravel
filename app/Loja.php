@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Loja extends Model
 {
-    protected $fillable = ['nome', 'descricao', 'fone', 'celular', 'slug'];
+    protected $fillable = ['nome', 'descricao', 'fone', 'celular', 'slug', 'logo'];
 
     public function user()
     {

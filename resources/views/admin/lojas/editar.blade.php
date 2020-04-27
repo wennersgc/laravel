@@ -4,7 +4,7 @@
 
     <h2>Atualizar loja</h2>
 
-    <form action="{{route('admin.lojas.update', ['loja' => $loja->id])}}" method="post">
+    <form action="{{route('admin.lojas.update', ['loja' => $loja->id])}}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -29,6 +29,14 @@
         </div>
 
         <div class="form-group">
+            <label for="fotos">Logo da loja</label>
+            <input type="file" name="logo" class="form-control" multiple>
+        </div>
+
+        <div class="form-group">
+            <p>
+                <img src="{{asset('storage/' . $loja->logo)}}" alt="">
+            </p>
             <label>Slug</label>
             <input type="text" name="slug" class="form-control" value="{{$loja->slug}}">
         </div>
