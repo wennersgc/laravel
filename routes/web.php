@@ -98,6 +98,8 @@ Route::group(['middleware' => ['auth']], function (){
         Route::resource('produtos', 'ProdutoController');
         Route::resource('categorias', 'CategoriaController');
 
+        Route::post('fotos/removeFoto', 'ProdutoFotoController@removeFoto')->name('foto.remove');
+
     });
 
 });
