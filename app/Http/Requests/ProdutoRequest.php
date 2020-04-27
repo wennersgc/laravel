@@ -28,7 +28,8 @@ ProdutoRequest extends FormRequest
             'nome' => 'required',
             'descricao' => 'required',
             'informacoes' => 'required',
-            'preco' => 'required'
+            'preco' => 'required',
+            'fotos' => 'image',
         ];
     }
 
@@ -38,6 +39,7 @@ ProdutoRequest extends FormRequest
             'min' => 'Campo :attribute deve ter no minimo :min caracteres',
             'max' => 'Campo :attribute deve ter no máximo :max caracteres',
             'required' => 'Campo :attribute obrigatório',
+            'image' => 'Este arquivo não é uma imagem válida',
         ];
     }
 }

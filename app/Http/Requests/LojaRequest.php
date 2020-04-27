@@ -28,6 +28,7 @@ class LojaRequest extends FormRequest
             'descricao' => 'required|max:255',
             'fone' => 'required',
             'celular' => 'required',
+            'logo' => 'image',
         ];
     }
 
@@ -37,6 +38,7 @@ class LojaRequest extends FormRequest
             'min' => 'Campo :attribute deve ter no minimo :min caracteres',
             'max' => 'Campo :attribute deve ter no máximo :max caracteres',
             'required' => 'Campo :attribute obrigatório',
+            'image' => 'Este arquivo não é uma imagem válida'
         ];
     }
 }

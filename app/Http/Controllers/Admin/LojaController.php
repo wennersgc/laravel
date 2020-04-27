@@ -14,7 +14,7 @@ class LojaController extends Controller
 
     public function __construct()
     {
-//    	$this->middleware('user.has.loja')->only(['create', 'store']);
+    	$this->middleware('user.has.loja')->only(['create', 'store']);
     }
 
     public function index()
@@ -29,7 +29,7 @@ class LojaController extends Controller
         return view('admin.lojas.criar', compact('users'));
     }
 
-    public function store(Request $request)
+    public function store(LojaRequest $request)
     {
         $data = $request->all();
         $user = auth()->user();

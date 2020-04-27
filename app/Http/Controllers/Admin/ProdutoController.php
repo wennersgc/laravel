@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Produto;
 use Illuminate\Http\Request;
+use App\Traits\UploadTrait;
 use App\Http\Requests\ProdutoRequest;
 
 class ProdutoController extends Controller
 {
+    use UploadTrait;
     private $produto;
     public function __construct(Produto $produto)
     {
@@ -55,7 +57,7 @@ class ProdutoController extends Controller
         $produto->categorias()->sync($data['categorias']);
 
         if ($request->hasFile('fotos')) {
-            $images = $this->imageUpload($request, 'image');
+            $images = $this->imageUpload($request->file('fotos'), 'image');
 
             $produto->fotos()->createMany($images);
         }
@@ -106,7 +108,7 @@ class ProdutoController extends Controller
         $produto->categorias()->sync($data['categorias']);
 
         if ($request->hasFile('fotos')) {
-            $images = $this->imageUpload($request, 'image');
+            $images = $this->imageUpload($request->file('fotos'), 'image');
 
             $produto->fotos()->createMany($images);
         }
