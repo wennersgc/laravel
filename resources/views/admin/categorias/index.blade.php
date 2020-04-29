@@ -11,6 +11,7 @@
         <tr>
             <th>#</th>
             <th>Categoria</th>
+            <th>Slug</th>
             <th>Ações</th>
         </tr>
         </thead>
@@ -20,6 +21,7 @@
             <tr>
                 <td>{{$categoria->id}}</td>
                 <td>{{$categoria->nome}}</td>
+                <td>{{$categoria->slug}}</td>
                 <td>
                     <div class="btn-group">
                         <a href="{{route('admin.categorias.edit', ['categoria' => $categoria->id])}}" class="btn btn-sm btn-primary mr-2">Editar</a>

@@ -37,8 +37,6 @@
             <p>
                 <img src="{{asset('storage/' . $loja->logo)}}" alt="">
             </p>
-            <label>Slug</label>
-            <input type="text" name="slug" class="form-control" value="{{$loja->slug}}">
         </div>
 
       <div class="form-group">

@@ -50,11 +50,12 @@ class ProdutoController extends Controller
     public function store(ProdutoRequest $request)
     {
         $data = $request->all();
+        $categorias = $request->get('categorias', null);
 
         $loja = auth()->user()->loja;
         $produto = $loja->produtos()->create($data);
 
-        $produto->categorias()->sync($data['categorias']);
+        $produto->categorias()->sync( $categorias);
 
         if ($request->hasFile('fotos')) {
             $images = $this->imageUpload($request->file('fotos'), 'image');
@@ -102,10 +103,14 @@ class ProdutoController extends Controller
     public function update(ProdutoRequest $request, $produto)
     {
         $data = $request->all();
+        $categorias = $request->get('categorias', null);
 
         $produto = $this->produto->find($produto);
         $produto->update($data);
-        $produto->categorias()->sync($data['categorias']);
+
+        if (!is_null($categorias)) {
+            $produto->categorias()->sync($categorias);
+        }
 
         if ($request->hasFile('fotos')) {
             $images = $this->imageUpload($request->file('fotos'), 'image');

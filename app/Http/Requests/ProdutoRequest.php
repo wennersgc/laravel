@@ -29,7 +29,7 @@ ProdutoRequest extends FormRequest
             'descricao' => 'required',
             'informacoes' => 'required',
             'preco' => 'required',
-            'fotos' => 'image',
+            'fotos.*' => 'image',
         ];
     }
 
