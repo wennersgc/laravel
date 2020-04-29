@@ -13,10 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    $helloWord['helloword'] = 'Hello Word';
-    return view('welcome',$helloWord);
-})->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 
 Route::get('/model', function (){

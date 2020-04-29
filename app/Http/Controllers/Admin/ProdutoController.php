@@ -12,6 +12,7 @@ class ProdutoController extends Controller
 {
     use UploadTrait;
     private $produto;
+
     public function __construct(Produto $produto)
     {
         $this->produto = $produto;
