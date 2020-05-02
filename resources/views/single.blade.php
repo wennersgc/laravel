@@ -22,15 +22,38 @@
     </div>
 
     <div class="col-6">
-        <h2>{{$produto->nome}}</h2>
+            <div class="col-md-12">
+                <h2>{{$produto->nome}}</h2>
+                <p>
+                    {{$produto->descrcao}}
+                </p>
 
-        <p>
-            {{$produto->descrcao}}
-        </p>
+                <h3>R$ {{number_format($produto->preco, '2',',', '.')}}</h3>
 
-        <h3>R$ {{number_format($produto->preco, '2',',', '.')}}</h3>
+                <span>Loja: {{$produto->loja->nome}}</span>
+            </div>
 
-        <span>Loja: {{$produto->loja->nome}}</span>
+            <div class="produto-add col-md-12">
+
+                <hr>
+
+                <form action="{{route('cart.add')}}" method="post">
+                    @csrf
+
+                    <input type="hidden" name="produto[nome]" value="{{$produto->nome}}">
+                    <input type="hidden" name="produto[preco]" value="{{$produto->preco}}">
+                    <input type="hidden" name="produto[slug]" value="{{$produto->slug}}">
+
+                    <div class="form-group">
+                        <label for="quantidade">Quantidade:</label>
+                        <input type="number" name="produto[quantidade]" class="form-control col-md-2" value="1">
+                    </div>
+
+                    <button class="btn-lg btn-danger">Comprar</button>
+
+                </form>
+
+            </div>
     </div>
 </div>
 

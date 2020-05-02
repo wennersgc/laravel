@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/produto/{slug}', 'HomeController@single')->name('produto.single');
 
+Route::prefix('cart')->name('cart.')->group(function(){
+    Route::get('/','CartController@index')->name('index');
+    Route::post('add', 'CartController@add')->name('add');
+});
+
 
 Route::group(['middleware' => ['auth']], function (){
     Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function (){
