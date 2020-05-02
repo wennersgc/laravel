@@ -14,7 +14,33 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/produto/{slug}', 'HomeController@single')->name('produto.single');
 
+
+Route::group(['middleware' => ['auth']], function (){
+    Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function (){
+
+//    Route::prefix('lojas')->name('loja.')->group(function (){
+//
+//        Route::get('/', 'LojaController@index')->name('index');
+//        Route::get('/create', 'LojaController@create')->name('create');
+//        Route::post('/store', 'LojaController@store')->name('store');
+//        Route::get('/{loja}/edit', 'LojaController@edit')->name('edit');
+//        Route::post('/update/{loja}', 'LojaController@update')->name('update');
+//        Route::get('/destroy/{loja}', 'LojaController@destroy')->name('destroy');
+//    });
+
+        Route::resource('lojas', 'LojaController');
+        Route::resource('produtos', 'ProdutoController');
+        Route::resource('categorias', 'CategoriaController');
+
+        Route::post('fotos/removeFoto', 'ProdutoFotoController@removeFoto')->name('foto.remove');
+
+    });
+
+});
+
+Auth::routes();
 
 Route::get('/model', function (){
 //    $produtos = \App\Produto::all();
@@ -77,30 +103,4 @@ Route::get('/model', function (){
 //    dd($produto->categorias()->detach([1])); // remove
 //    dd($produto->categorias()->sync([1, 2]));
 });
-
-Route::group(['middleware' => ['auth']], function (){
-    Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function (){
-
-//    Route::prefix('lojas')->name('loja.')->group(function (){
-//
-//        Route::get('/', 'LojaController@index')->name('index');
-//        Route::get('/create', 'LojaController@create')->name('create');
-//        Route::post('/store', 'LojaController@store')->name('store');
-//        Route::get('/{loja}/edit', 'LojaController@edit')->name('edit');
-//        Route::post('/update/{loja}', 'LojaController@update')->name('update');
-//        Route::get('/destroy/{loja}', 'LojaController@destroy')->name('destroy');
-//    });
-
-        Route::resource('lojas', 'LojaController');
-        Route::resource('produtos', 'ProdutoController');
-        Route::resource('categorias', 'CategoriaController');
-
-        Route::post('fotos/removeFoto', 'ProdutoFotoController@removeFoto')->name('foto.remove');
-
-    });
-
-});
-
-Auth::routes();
-
 //Route::get('/home', 'HomeController@index')->name('home');

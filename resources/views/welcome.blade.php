@@ -11,12 +11,22 @@
                 <div class="card" style="width: 98%">
 
                     @if($produto->fotos->count())
-                        <img src="{{asset('storage/' . $produto->fotos->first()->image)}}" alt="" class="car-img-top">
+                        <img src="{{asset('storage/' . $produto->fotos->first()->image)}}" alt="" class="car-img-top img-thumbnail">
+
+                    @else
+                        <img src="{{asset('assets/img/no-photo.jpg')}}" alt="" class="car-img-top img-thumbnail">
+
                     @endif
 
                     <div class="card-body">
                         <h2 class="card-title">{{$produto->nome}}</h2>
                         <p class="card-text">{{$produto->descricao}}</p>
+
+                        <h3>R$ {{number_format($produto->preco, '2',',', '.')}}</h3>
+
+                        <a href="{{route('produto.single', ['slug' => $produto->slug])}}" class="btn btn-success">
+                            Ver produto
+                        </a>
                     </div>
                 </div>
             </div>

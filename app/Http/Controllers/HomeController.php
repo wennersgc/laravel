@@ -13,15 +13,18 @@ class HomeController extends Controller
     {
         $this->produto = $produto;
     }
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
+
     public function index()
     {
         $produtos = $this->produto->limit(9)->orderBy('id', 'DESC')->get();
 
         return view('welcome', compact('produtos'));
+    }
+
+    public function single($slug)
+    {
+       $produto = $this->produto->whereSlug($slug)->first();
+
+       return view('single', compact('produto'));
     }
 }
