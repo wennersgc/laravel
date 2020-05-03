@@ -48,4 +48,11 @@ class CartController extends Controller
 
         return redirect()->route('cart.index');
     }
+
+    public function cancel()
+    {
+        session()->forget('cart');
+        flash('Desistencia da compra realizada com sucesso')->success();
+        return redirect()->route('cart.index');
+    }
 }
