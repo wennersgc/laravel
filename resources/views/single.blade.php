@@ -1,6 +1,5 @@
 @extends('layouts.front')
 
-
 @section('content')
 
 <div class="row">
@@ -49,7 +48,7 @@
                         <input type="number" name="produto[quantidade]" class="form-control col-md-2" value="1">
                     </div>
 
-                    <button class="btn-lg btn-danger">Comprar</button>
+                    <button type="submit" class="btn-lg btn-danger">Comprar</button>
 
                 </form>
 
