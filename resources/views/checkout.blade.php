@@ -41,6 +41,10 @@
                         <label for="cartao_cvv">Código de segurança</label>
                         <input type="text" class="form-control" name="cartao_cvv">
                     </div>
+
+                    <div class="col-md-12 installments form-group">
+                        sadsada
+                    </div>
                 </div>
 
                 <button class="btn btn-lg btn-success">Efetuar pagamento</button>
@@ -97,11 +101,12 @@
                 maxInstallmentNoInterest: 0,
 
                 success: function (res) {
-                    console.log(res);
+                    let selectInstallments = drawSelectInstallments(res.installments[bandeira]);
+                    document.querySelector('div.installments').innerHTML = selectInstallments;
                 },
 
-                error: function (res) {
-
+                error: function (error) {
+                    console.log(error);
                 },
 
 
@@ -109,6 +114,21 @@
 
                 }
             })
+        }
+
+        function drawSelectInstallments(installments) {
+            let select = '<label>Opções de Parcelamento:</label>';
+
+            select += '<select class="form-control">';
+
+            for(let l of installments) {
+                select += `<option value="${l.quantity}|${l.installmentAmount}">${l.quantity}x de ${l.installmentAmount} - Total fica ${l.totalAmount}</option>`;
+            }
+
+
+            select += '</select>';
+
+            return select;
         }
     </script>
 
