@@ -18,8 +18,8 @@
             <form action=""method="post">
 
                 <div class="row mb-3">
-                    <div class="col-md-8">
-                        <label for="numero_cartao">Numero do cartão</label>
+                    <div class="col-md-10">
+                        <label for="numero_cartao">Numero do cartão <span class="brand"></span></label>
                         <input type="text" class="form-control" name="cartao_numero">
                     </div>
                 </div>
@@ -49,5 +49,44 @@
         </div>
 
     </div>
+
+@endsection
+
+@section('scripts')
+
+    <script src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
+
+    <script>
+        const sessionId = '{{session()->get('pagseguro_session_code')}}'
+        PagSeguroDirectPayment.setSessionId(sessionId);
+        // PagSeguroDirectPayment.setSessionId(sessionId);
+;    </script>
+
+    <script>
+        //pegando bandeira
+        let cartaoNumero = document.querySelector('input[name=cartao_numero]');
+        let spanBrand =  document.querySelector('span.brand');
+
+        cartaoNumero.addEventListener('keyup', function(){
+             if(cartaoNumero.value.length >= 6) {
+                 PagSeguroDirectPayment.getBrand({
+                     cardBin: cartaoNumero.value.substr(0, 6),
+
+                     success: function (res) {
+                            let imgFlag =`<img src="https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/68x30/${res.brand.name}.png" />`;
+                            spanBrand.innerHTML = imgFlag;
+                     },
+
+                     error: function (err) {
+                        console.log(error);
+                    },
+
+                     complete: function (res) {
+                       // console.log('Complete: ' + res);
+                     }
+                 });
+             }
+        });
+    </script>
 
 @endsection
