@@ -59,8 +59,7 @@
     <script>
         const sessionId = '{{session()->get('pagseguro_session_code')}}'
         PagSeguroDirectPayment.setSessionId(sessionId);
-        // PagSeguroDirectPayment.setSessionId(sessionId);
-;    </script>
+    </script>
 
     <script>
         //pegando bandeira
@@ -75,6 +74,7 @@
                      success: function (res) {
                             let imgFlag =`<img src="https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/68x30/${res.brand.name}.png" />`;
                             spanBrand.innerHTML = imgFlag;
+                            opcaoParcelamentos(100, res.brand.name);
                      },
 
                      error: function (err) {
@@ -87,6 +87,29 @@
                  });
              }
         });
+
+         function opcaoParcelamentos(total, bandeira) {
+
+            PagSeguroDirectPayment.getInstallments({
+                amount: total,
+                brand: bandeira,
+                //parcelas em que assumimos os juros - 0 = sem juros
+                maxInstallmentNoInterest: 0,
+
+                success: function (res) {
+                    console.log(res);
+                },
+
+                error: function (res) {
+
+                },
+
+
+                complete: function (res) {
+
+                }
+            })
+        }
     </script>
 
 @endsection
