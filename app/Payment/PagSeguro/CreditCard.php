@@ -94,7 +94,7 @@ class CreditCard
 
         //parcelas e valor
         list($quantidade, $valorParcela) = explode('|', $this->cardInfo['installment']);
-        $valorParcela = number_format($valorParcela,2,'.', '');
+        $valorParcela = number_format($valorParcela,2,'.', ',');
         $creditCard->setInstallment()->withParameters($quantidade, $valorParcela);
 
         //aniversario cliente

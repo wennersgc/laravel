@@ -14,6 +14,10 @@ class CheckoutController extends Controller
             return redirect()->route('login');
         }
 
+        if (!session()->has('cart')){
+            return redirect()->route('home');
+        }
+
         $this->makePagSeguroSession();
 
         $total = 0;
@@ -29,33 +33,56 @@ class CheckoutController extends Controller
 
     public function proccess(Request $request)
     {
-        $dataPost = $request->all();
-        $cartItens = session()->get('cart');
-        $user = auth()->user();
-        $reference = 'XPTO';
+        try {
+
+            $dataPost = $request->all();
+            $cartItens = session()->get('cart');
+            $user = auth()->user();
+            $reference = 'XPTO';
 
 
-        $creditCardPayment = new CreditCard($cartItens, $user, $dataPost, $reference);
+            $creditCardPayment = new CreditCard($cartItens, $user, $dataPost, $reference);
 
-        $result = $creditCardPayment->doPayment();
+            $result = $creditCardPayment->doPayment();
 
 
-        $userOrder =  [
-            'reference' => $reference,
-            'pagseguro_code' => $result->getCode(),
-            'pagseguro_status' => $result->getStatus(),
-            'itens' => serialize($cartItens),
-            'loja_id' => 1
-        ];
+            $userOrder =  [
+                'reference' => $reference,
+                'pagseguro_code' => $result->getCode(),
+                'pagseguro_status' => $result->getStatus(),
+                'itens' => serialize($cartItens),
+                'loja_id' => 1
+            ];
 
-        $user->orders()->create($userOrder);
+            $user->orders()->create($userOrder);
 
-        return response()->json([
-            'data' => [
-                'status' => true,
-                'message' => 'Pedido criado com sucesso'
-            ]
-        ]);
+            session()->forget('cart');
+            session()->forget('pagseguro_session_code');
+
+            return response()->json([
+                'data' => [
+                    'status' => true,
+                    'message' => 'Pedido criado com sucesso',
+                    'order'=> $reference
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            $message = env('APP_DEBUG') ? $e->getMessage() : 'Erro ao processar o pedido';
+
+            return response()->json([
+                'data' => [
+                    'status' => false,
+                    'message' => $message,
+                ]
+            ], 401);
+        }
+
+    }
+
+    public function obrigado()
+    {
+        return view('obrigado');
     }
 
     private function makePagSeguroSession()
