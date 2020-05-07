@@ -8,6 +8,7 @@ class CheckoutController extends Controller
 {
     public function index()
     {
+//       session()->forget('pagseguro_session_code');
         if (!auth()->check()) {
             return redirect()->route('login');
         }
@@ -15,6 +16,11 @@ class CheckoutController extends Controller
         $this->makePagSeguroSession();
 
         return view('checkout');
+    }
+
+    public function proccess(Request $request)
+    {
+        dd($request->all());
     }
 
     private function makePagSeguroSession()

@@ -15,12 +15,13 @@
                 </div>
             </div>
 
-            <form action=""method="post">
+            <form action="" method="post">
 
                 <div class="row mb-3">
                     <div class="col-md-10">
                         <label for="numero_cartao">Numero do cartão <span class="brand"></span></label>
                         <input type="text" class="form-control" name="cartao_numero">
+                        <input type="" name="cartao_brand">
                     </div>
                 </div>
 
@@ -43,11 +44,10 @@
                     </div>
 
                     <div class="col-md-12 installments form-group">
-                        sadsada
                     </div>
                 </div>
 
-                <button class="btn btn-lg btn-success">Efetuar pagamento</button>
+                <button class="btn btn-lg btn-success proccessCheckout">Efetuar pagamento</button>
             </form>
 
         </div>
@@ -59,6 +59,7 @@
 @section('scripts')
 
     <script src="https://stc.sandbox.pagseguro.uol.com.br/pagseguro/api/v2/checkout/pagseguro.directpayment.js"></script>
+    <script src="{{asset('assets/js/jquery.ajax.js')}}"></script>
 
     <script>
         const sessionId = '{{session()->get('pagseguro_session_code')}}'
@@ -71,42 +72,89 @@
         let spanBrand =  document.querySelector('span.brand');
 
         cartaoNumero.addEventListener('keyup', function(){
-             if(cartaoNumero.value.length >= 6) {
-                 PagSeguroDirectPayment.getBrand({
-                     cardBin: cartaoNumero.value.substr(0, 6),
 
-                     success: function (res) {
-                            let imgFlag =`<img src="https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/68x30/${res.brand.name}.png" />`;
-                            spanBrand.innerHTML = imgFlag;
-                            opcaoParcelamentos(100, res.brand.name);
-                     },
+            if(cartaoNumero.value.length >= 6) {
 
-                     error: function (err) {
-                        console.log(error);
+                PagSeguroDirectPayment.getBrand({
+                    cardBin: cartaoNumero.value.substr(0, 6),
+
+                    success: function (res) {
+                        let imgFlag =`<img src="https://stc.pagseguro.uol.com.br/public/img/payment-methods-flags/68x30/${res.brand.name}.png" />`;
+                        spanBrand.innerHTML = imgFlag;
+                        document.querySelector('input[name=cartao_brand]').value = res.brand.name;
+
+                        getInstallments(100, res.brand.name);
                     },
 
-                     complete: function (res) {
-                       // console.log('Complete: ' + res);
-                     }
-                 });
-             }
+                    error: function (err) {
+                        console.log(err);
+                    },
+
+                    complete: function (res) {
+                    }
+                });
+            }
         });
 
-         function opcaoParcelamentos(total, bandeira) {
+
+        let submitButton = document.querySelector('button.proccessCheckout');
+
+        submitButton.addEventListener('click', function(event){
+
+            event.preventDefault();
+
+            PagSeguroDirectPayment.createCardToken({
+                cardNumber: document.querySelector('input[name=cartao_numero]').value,
+                brand: document.querySelector('input[name=cartao_brand]').value,
+                cvv: document.querySelector('input[name=cartao_cvv]').value,
+                expirationMonth: document.querySelector('input[name=cartao_mes]').value,
+                expirationYear: document.querySelector('input[name=cartao_ano]').value,
+
+                success: function (res) {
+                    // console.log(res);
+                    proccessPayment(res.card.token);
+                },
+            });
+        });
+
+
+        function proccessPayment(token) {
+
+            let data = {
+                card_token: token,
+                hash:   PagSeguroDirectPayment.getSenderHash(),
+                installment: document.querySelector('select.select_installments').value,
+                _token: '{{csrf_token()}}'
+            }
+
+            $.ajax({
+                type: 'POST',
+                url:'{{route("checkout.proccess")}}',
+                data: data,
+                dataType: 'json',
+
+                success: function (res) {
+                    console.log(res);
+                }
+            });
+        }
+
+
+        function getInstallments(total, brand) {
 
             PagSeguroDirectPayment.getInstallments({
                 amount: total,
-                brand: bandeira,
+                brand: brand,
                 //parcelas em que assumimos os juros - 0 = sem juros
                 maxInstallmentNoInterest: 0,
 
                 success: function (res) {
-                    let selectInstallments = drawSelectInstallments(res.installments[bandeira]);
+                    let selectInstallments = drawSelectInstallments(res.installments[brand]);
                     document.querySelector('div.installments').innerHTML = selectInstallments;
                 },
 
                 error: function (error) {
-                    console.log(error);
+                    console.log('=====>>>> ' + erro);
                 },
 
 
@@ -116,10 +164,11 @@
             })
         }
 
+
         function drawSelectInstallments(installments) {
             let select = '<label>Opções de Parcelamento:</label>';
 
-            select += '<select class="form-control">';
+            select += '<select class="form-control select_installments">';
 
             for(let l of installments) {
                 select += `<option value="${l.quantity}|${l.installmentAmount}">${l.quantity}x de ${l.installmentAmount} - Total fica ${l.totalAmount}</option>`;
