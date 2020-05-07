@@ -19,9 +19,16 @@
 
                 <div class="row mb-3">
                     <div class="col-md-10">
-                        <label for="numero_cartao">Numero do cartão <span class="brand"></span></label>
+                        <label for="cartao_nome">Nome no cartão</label>
+                        <input type="text" class="form-control" name="cartao_nome">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-10">
+                        <label for="cartao_numero">Numero do cartão <span class="brand"></span></label>
                         <input type="text" class="form-control" name="cartao_numero">
-                        <input type="" name="cartao_brand">
+                        <input type="hidden" name="cartao_brand">
                     </div>
                 </div>
 
@@ -67,6 +74,7 @@
     </script>
 
     <script>
+        let valorTransacao = '{{$cartItens}}'
         //pegando bandeira
         let cartaoNumero = document.querySelector('input[name=cartao_numero]');
         let spanBrand =  document.querySelector('span.brand');
@@ -83,7 +91,7 @@
                         spanBrand.innerHTML = imgFlag;
                         document.querySelector('input[name=cartao_brand]').value = res.brand.name;
 
-                        getInstallments(100, res.brand.name);
+                        getInstallments(valorTransacao, res.brand.name);
                     },
 
                     error: function (err) {
@@ -124,6 +132,7 @@
                 card_token: token,
                 hash:   PagSeguroDirectPayment.getSenderHash(),
                 installment: document.querySelector('select.select_installments').value,
+                cartao_nome: document.querySelector('input[name=cartao_nome]').value,
                 _token: '{{csrf_token()}}'
             }
 
@@ -151,15 +160,6 @@
                 success: function (res) {
                     let selectInstallments = drawSelectInstallments(res.installments[brand]);
                     document.querySelector('div.installments').innerHTML = selectInstallments;
-                },
-
-                error: function (error) {
-                    console.log('=====>>>> ' + erro);
-                },
-
-
-                complete: function (res) {
-
                 }
             })
         }

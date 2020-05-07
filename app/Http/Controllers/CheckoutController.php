@@ -15,23 +15,137 @@ class CheckoutController extends Controller
 
         $this->makePagSeguroSession();
 
-        return view('checkout');
+        $total = 0;
+
+        $cartItens = array_map(function ($linha){
+            return $linha['quantidade'] *= $linha['preco'];
+        }, session()->get('cart'));
+
+        $cartItens = array_sum($cartItens);
+
+        return view('checkout', compact('cartItens'));
     }
 
     public function proccess(Request $request)
     {
-        dd($request->all());
+        $dataPost = $request->all();
+
+        $reference = 'XPTO';
+
+        //objeto cartão de credito
+        $creditCard = new \PagSeguro\Domains\Requests\DirectPayment\CreditCard();
+
+        //email de quem vai receber o pagamento
+        $creditCard->setReceiverEmail(ENV('PAGSEGURO_EMAIL'));
+        //referencia para identificar a transação futuramente
+        $creditCard->setReference($reference);
+        //moeda
+        $creditCard->setCurrency("BRL");
+
+        $cartItens = session()->get('cart');
+
+        //itens da compra
+        foreach ($cartItens as $item) {
+            $creditCard->addItems()->withParameters(
+                $reference,
+                $item['nome'],
+                $item['quantidade'],
+                $item['preco']
+            );
+        }
+
+        // Informações do comprador.
+        // If you using SANDBOX you must use an email @sandbox.pagseguro.com.br
+        $user = auth()->user();
+        $email = ENV('PAGSEGURO_ENV') == 'sandbox'? 'teste@sandbox.pagseguro.com.br' : $user->emil;
+        $creditCard->setSender()->setName($user->name);
+        $creditCard->setSender()->setEmail($email);
+
+        //telefone usuario
+        $creditCard->setSender()->setPhone()->withParameters(
+            11,
+            56273440
+        );
+        //cpf
+        $creditCard->setSender()->setDocument()->withParameters(
+            'CPF',
+            '77462061155'
+        );
+
+        //hash do cartao
+        $creditCard->setSender()->setHash($dataPost['hash']);
+
+        //ip do usuario
+        $creditCard->setSender()->setIp('127.0.0.0');
+
+        //endereço de entrega
+        $creditCard->setShipping()->setAddress()->withParameters(
+            'Av. Brig. Faria Lima',
+            '1384',
+            'Jardim Paulistano',
+            '01452002',
+            'São Paulo',
+            'SP',
+            'BRA',
+            'apto. 114'
+        );
+
+        //endereço para o cartçao de credito
+        $creditCard->setBilling()->setAddress()->withParameters(
+            'Av. Brig. Faria Lima',
+            '1384',
+            'Jardim Paulistano',
+            '01452002',
+            'São Paulo',
+            'SP',
+            'BRA',
+            'apto. 114'
+        );
+
+        //toke cartão
+        $creditCard->setToken($dataPost['card_token']);
+
+        //parcelas e valor
+        list($quantidade, $valorParcela) = explode('|', $dataPost['installment']);
+        $valorParcela = number_format($valorParcela,2,'.', '');
+        $creditCard->setInstallment()->withParameters($quantidade, $valorParcela);
+
+        //aniversario cliente
+        $creditCard->setHolder()->setBirthdate('01/10/1979');
+
+        //nome igual ao do cartão
+        $creditCard->setHolder()->setName($dataPost['cartao_nome']);
+
+        $creditCard->setHolder()->setPhone()->withParameters(
+            11,
+            56273440
+        );
+
+        //cpf do titular do cartão
+        $creditCard->setHolder()->setDocument()->withParameters(
+            'CPF',
+            '77462061155'
+        );
+
+        //modo de pagamento
+        $creditCard->setMode('DEFAULT');
+
+        $result = $creditCard->register(
+            \PagSeguro\Configuration\Configure::getAccountCredentials()
+        );
+
+        var_dump($result);
     }
 
     private function makePagSeguroSession()
     {
-         if (!session()->has('pagseguro_session_code')) {
-             $sessionCode = \PagSeguro\Services\Session::create(
-                 \PagSeguro\Configuration\Configure::getAccountCredentials()
-             );
+        if (!session()->has('pagseguro_session_code')) {
+            $sessionCode = \PagSeguro\Services\Session::create(
+                \PagSeguro\Configuration\Configure::getAccountCredentials()
+            );
 
             session()->put('pagseguro_session_code', $sessionCode->getResult());
-         }
+        }
 
     }
 }
