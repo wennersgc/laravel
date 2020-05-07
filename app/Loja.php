@@ -29,4 +29,9 @@ class Loja extends Model
             ->saveSlugsTo('slug');
     }
 
+    public function orders()
+    {
+        return $this->hasMany(UserOrder::class);
+    }
+
 }
