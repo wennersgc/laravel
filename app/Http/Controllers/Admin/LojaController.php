@@ -53,6 +53,7 @@ class LojaController extends Controller
     public function edit($loja)
     {
         $loja =\App\Loja::find($loja);
+//        dd($loja);
 
         return view('admin.lojas.editar', compact('loja'));
     }

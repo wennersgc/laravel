@@ -39,4 +39,30 @@
 
     </div>
 
+    <div class="row">
+        <div class="col-12">
+            <h2>Lojas destaques</h2>
+            <hr>
+        </div>
+
+        @foreach($lojas as $loja)
+            <div class="col-4">
+
+                @if($loja->logo)
+                    <img src="{{asset('storage/' . $loja->logo)}}" alt="Logo da {{$loja->nome}}" class="img-fluid">
+
+                @else
+                    <img src="{{asset('assets/img/loja-sem-logo.png')}}" alt="Logo da {{$loja->nome}}" class="img-fluid">
+                @endif
+
+                <h3>{{$loja->nome}}</h3>
+
+                <p>
+                    {{$loja->descricao}}
+                </p>
+            </div>
+        @endforeach
+
+    </div>
+
 @endsection
