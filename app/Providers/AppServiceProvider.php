@@ -26,5 +26,9 @@ class AppServiceProvider extends ServiceProvider
         \PagSeguro\Library::initialize();
         \PagSeguro\Library::cmsVersion()->setName("Marketplace")->setRelease("1.0.0");
         \PagSeguro\Library::moduleVersion()->setName("Marketplace")->setRelease("1.0.0");
+
+        $categorias = \App\Categoria::all('nome', 'slug');
+
+        view()->share('categorias', $categorias);
     }
 }
