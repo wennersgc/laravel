@@ -15,7 +15,17 @@ class CartController extends Controller
 
     public function add(Request $request)
     {
-        $produto = $request->get('produto');
+        $produtoData = $request->get('produto');
+
+        $produto = \App\Produto::whereSlug($produtoData['slug']);
+
+        if (!$produto->count() || $produtoData['quantidade'] <= 0) {
+            flash('Produto não encontrado ou quantidade minima não informada')->warning();
+            return redirect()->route('home');
+        }
+
+        $produto = $produto->first(['nome','preco'])->toArray();
+        $produto = array_merge($produtoData, $produto);
 
         //existe sessao para os produtos?
         if (session()->has('cart')) {
@@ -25,7 +35,7 @@ class CartController extends Controller
             $produtosSlugs = array_column($produtos, 'slug');
 
             //evitando duplicidades
-            //se o slug já existir, se a sessãpjá tiver umproduto com o mesmo slug de $produtosSlugs
+            //se o slug já existir, se a sessão já tiver um produto com o mesmo slug de $produtosSlugs
             if (in_array($produto['slug'], $produtosSlugs)) {
                 $produtos = $this->incrementaProduto($produto['slug'], $produto['quantidade'], $produtos);
                 session()->put('cart', $produtos);
