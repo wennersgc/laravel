@@ -24,6 +24,9 @@ class CategoriaController extends Controller
     public function index()
     {
         $categorias = $this->categoria->paginate(10);
+//        dd($categorias);
+//
+//        dd($categorias);
 
         return view('admin.categorias.index', compact('categorias'));
     }

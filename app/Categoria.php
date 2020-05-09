@@ -10,9 +10,9 @@ class Categoria extends Model
 {
     use HasSlug;
 
-    protected $fillable= ['nome', 'descricao', 'slug'];
+    protected $fillable= ['nome', 'descricao', 'slug', 'id'];
 
-    public function produto()
+    public function produtos()
     {
         return $this->belongsToMany(Produto::class);
     }
