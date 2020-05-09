@@ -5,18 +5,37 @@
 
     <div class="row front">
 
-        <div class="col-12">
-            <h2>{{$categoria->nome}}</h2>
-            <hr>
+        <div class="col-4">
+            @if($loja->logo)
+                <img src="{{asset('storage/' . $loja->logo)}}" alt="Logo da {{$loja->nome}}" class="img-fluid">
+
+            @else
+                <img src="{{asset('assets/img/loja-sem-logo.png')}}" alt="Logo da {{$loja->nome}}" class="img-fluid">
+            @endif
         </div>
 
-        @forelse($categoria->produtos as $key => $produto)
+        <div class="col-8">
+            <h2>{{$loja->nome}}</h2>
+            <p>{{$loja->descricao}}</p>
+            <p>
+                <strong>Contatos</strong>
+                <span>Fixo: {{$loja->fone}}</span> | Cel: <span>{{$loja->celular}}</span>
+            </p>
+        </div>
+
+        <div class="col-12 mb-4">
+            <hr>
+            <h3>Produtos desta loja</h3>
+        </div>
+
+        @forelse($loja->produtos as $key => $produto)
 
             <div class="col-md-4">
                 <div class="card" style="width: 98%">
 
                     @if($produto->fotos->count())
-                        <img src="{{asset('storage/' . $produto->fotos->first()->image)}}" alt="" class="car-img-top img-thumbnail">
+                        <img src="{{asset('storage/' . $produto->fotos->first()->image)}}" alt=""
+                             class="car-img-top img-thumbnail">
 
                     @else
                         <img src="{{asset('assets/img/no-photo.jpg')}}" alt="" class="car-img-top img-thumbnail">
@@ -37,12 +56,13 @@
             </div>
 
             @if(($key + 1) % 3 == 0)
-    </div><div class="row front">
+    </div>
+    <div class="row front">
         @endif
 
         @empty
             <div class="col-12">
-                <h3 class="alert alert-warning">Categoria sem produto</h3>
+                <h3 class="alert alert-warning">Loja sem produtos</h3>
             </div>
         @endforelse
     </div>
