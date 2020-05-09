@@ -9,6 +9,7 @@ class CartController extends Controller
     public function index()
     {
         $cart = session()->has('cart') ? session()->get('cart') : [];
+
         return view('cart', compact('cart'));
 
     }
@@ -24,7 +25,7 @@ class CartController extends Controller
             return redirect()->route('home');
         }
 
-        $produto = $produto->first(['nome','preco'])->toArray();
+        $produto = $produto->first(['nome','preco','loja_id'])->toArray();
         $produto = array_merge($produtoData, $produto);
 
         //existe sessao para os produtos?

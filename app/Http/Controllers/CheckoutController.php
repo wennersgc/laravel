@@ -37,6 +37,7 @@ class CheckoutController extends Controller
 
             $dataPost = $request->all();
             $cartItens = session()->get('cart');
+            $lojas = array_unique(array_column($cartItens, 'loja_id'));
             $user = auth()->user();
             $reference = 'XPTO';
 
@@ -54,10 +55,11 @@ class CheckoutController extends Controller
                 'loja_id' => 1
             ];
 
-            $user->orders()->create($userOrder);
+            $userOrder = $user->orders()->create($userOrder);
+            $userOrder->lojas()->sync($lojas);
 
-            session()->forget('cart');
-            session()->forget('pagseguro_session_code');
+//            session()->forget('cart');
+//            session()->forget('pagseguro_session_code');
 
             return response()->json([
                 'data' => [
