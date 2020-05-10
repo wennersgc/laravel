@@ -41,12 +41,17 @@
 
         <div class="my-2 my-lg-0">
             <ul class="navbar-nav mr-auto">
+                @auth
+                <li class="nav-item">
+                    <a href="{{route('user.orders')}}" class="nav-link">meus pedidos</a>
+                </li>
+                @endauth
                 <li class="nav-item">
                     <a href="{{route('cart.index')}}" class="nav-link">
                         @if(session()->has('cart'))
                             <span class="badge badge-danger">
-                                    {{count(session()->get('cart'))}}
-                                </span>
+                                {{count(session()->get('cart'))}}
+                            </span>
                         @endif
                         <i class="fa fa-shopping-cart fa-2x"></i>
                     </a>
@@ -59,6 +64,8 @@
 <div class="container">
     @include('flash::message')
     @yield('content')
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     @yield('scripts')
 </div>
 </body>
