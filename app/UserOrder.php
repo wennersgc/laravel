@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class UserOrder extends Model
 {
     protected $fillable = ['reference', 'pagseguro_status', 'pagseguro_code', 'loja_id', 'itens'];
+
     public function user()
     {
         return $this->belongsTo(User::class);

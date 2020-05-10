@@ -50,9 +50,9 @@ Route::group(['middleware' => ['auth']], function (){
         Route::resource('lojas', 'LojaController');
         Route::resource('produtos', 'ProdutoController');
         Route::resource('categorias', 'CategoriaController');
-
         Route::post('fotos/removeFoto', 'ProdutoFotoController@removeFoto')->name('foto.remove');
 
+       Route::get('orders/my', 'OrdersController@index')->name('orders.my');
     });
 
 });

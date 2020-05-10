@@ -41,7 +41,6 @@ class CheckoutController extends Controller
             $user = auth()->user();
             $reference = 'XPTO';
 
-
             $creditCardPayment = new CreditCard($cartItens, $user, $dataPost, $reference);
 
             $result = $creditCardPayment->doPayment();
@@ -57,9 +56,6 @@ class CheckoutController extends Controller
 
             $userOrder = $user->orders()->create($userOrder);
             $userOrder->lojas()->sync($lojas);
-
-//            session()->forget('cart');
-//            session()->forget('pagseguro_session_code');
 
             return response()->json([
                 'data' => [

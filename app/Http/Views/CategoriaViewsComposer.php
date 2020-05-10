@@ -17,7 +17,6 @@ class CategoriaViewsComposer
 
     public function composer($view)
     {
-        $categorias = $this->categoria->paginate(10);
-        return $view->with('categorias', $categorias);
+        return $view->with('categorias', $this->categoria->all(['nome', 'slug']));
     }
 }
