@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Notifications\LojaRecebeuNovoPedido;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -34,6 +35,13 @@ class Loja extends Model
         return $this->belongsToMany(UserOrder::class, 'loja_order', 'loja_id', 'order_id');
     }
 
+    public function notificaDonosDeLoja($lojasId)
+    {
+        $lojas = $this->whereIn('id', $lojasId)->get();
 
+        $lojas->map(function ($loja){
+            return $loja->user;
+        })->each->notify(new LojaRecebeuNovoPedido());
+    }
 
 }

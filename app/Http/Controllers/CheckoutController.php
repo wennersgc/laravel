@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Loja;
 use App\Payment\PagSeguro\CreditCard;
 use Illuminate\Http\Request;
 
@@ -45,7 +46,6 @@ class CheckoutController extends Controller
 
             $result = $creditCardPayment->doPayment();
 
-
             $userOrder =  [
                 'reference' => $reference,
                 'pagseguro_code' => $result->getCode(),
@@ -56,6 +56,12 @@ class CheckoutController extends Controller
 
             $userOrder = $user->orders()->create($userOrder);
             $userOrder->lojas()->sync($lojas);
+
+            //notificar dono de loja que houve um pedido
+            $loja = (new Loja())->notificaDonosDeLoja($lojas);
+
+            session()->forget('cart');
+            session()->forget('pagseguro_session_code');
 
             return response()->json([
                 'data' => [

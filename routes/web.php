@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth']], function (){
 
     Route::get('my-orders', 'UserOrderController@index')->name('user.orders');
 
+
     Route::prefix('admin')->name('admin.')->namespace('Admin')->group(function (){
 
 //    Route::prefix('lojas')->name('loja.')->group(function (){
@@ -55,9 +56,28 @@ Route::group(['middleware' => ['auth']], function (){
         Route::resource('categorias', 'CategoriaController');
         Route::post('fotos/removeFoto', 'ProdutoFotoController@removeFoto')->name('foto.remove');
 
-       Route::get('orders/my', 'OrdersController@index')->name('orders.my');
+        Route::get('orders/my', 'OrdersController@index')->name('orders.my');
+
+        Route::get('notifications', 'NotificationController@notifications')->name('notifications.index');
+        Route::get('notifications/todas-lidas', 'NotificationController@todasLidas')->name('notifications.todas.lidas');
+        Route::get('notifications/ler/{notificacao}', 'NotificationController@ler')->name('notifications.ler');
     });
 
+});
+
+//notificações
+Route::get('not', function(){
+//    $user = \App\User::find(2);
+//    $user->notify(new \App\Notifications\LojaRecebeuNovoPedido());
+
+//    return $user->notifications; //todas as notificações
+//    return $user->unreadNotifications; //não lidas
+//    $notification = $user->unreadNotifications->first();
+//    $notification->markAsRead(); //hora da leitura
+//    return $user->unreadNotifications; //lidas
+//    $lojas = [1, 2, 3];
+
+//    return $user->readNotifications->count(); //total não lidas
 });
 
 Auth::routes();
